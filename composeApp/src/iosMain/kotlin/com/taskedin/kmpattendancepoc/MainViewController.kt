@@ -1,0 +1,5 @@
+package com.taskedin.kmpattendancepoc
+
+import androidx.compose.ui.window.ComposeUIViewController
+
+fun MainViewController() = ComposeUIViewController { App() }
