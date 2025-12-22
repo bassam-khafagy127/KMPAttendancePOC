@@ -29,7 +29,11 @@ kotlin {
         }
     }
 
-    jvm()
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+        }
+    }
 
     js {
         browser()
@@ -53,6 +57,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             // Android-specific engine
             implementation(libs.ktor.client.android)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -72,6 +78,10 @@ kotlin {
 
             implementation(libs.arrow.core)
             implementation(libs.arrow.fx.coroutines)
+            
+            // Koin for dependency injection
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
         }
 
         commonTest.dependencies {
@@ -107,8 +117,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
