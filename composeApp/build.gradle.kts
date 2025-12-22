@@ -66,7 +66,7 @@ kotlin {
 
             implementation(libs.arrow.core)
             implementation(libs.arrow.fx.coroutines)
-            
+
             // Koin for dependency injection
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
@@ -119,9 +119,20 @@ compose.desktop {
         mainClass = "com.taskedin.kmpattendancepoc.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.taskedin.kmpattendancepoc"
+            targetFormats(
+                TargetFormat.Dmg,
+                TargetFormat.Msi,
+                TargetFormat.Deb
+            )
+
+            packageName = "KmpAttendancePoc"
             packageVersion = "1.0.0"
+
+            windows {
+                menuGroup = "Kmp Attendance POC"
+                shortcut = true
+            }
         }
     }
 }
+
