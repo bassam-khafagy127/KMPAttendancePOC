@@ -1,9 +1,9 @@
 package com.taskedin.kmpattendancepoc.attendance.di
 
-import com.taskedin.kmpattendancepoc.attendance.model.GeoLocation
 import com.taskedin.kmpattendancepoc.attendance.platform.DeviceIdentifierProvider
 import com.taskedin.kmpattendancepoc.attendance.platform.LocationProvider
 import com.taskedin.kmpattendancepoc.attendance.platform.SettingsStore
+import com.taskedin.kmpattendancepoc.attendance.platform.jvm.JvmLocationProvider
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import java.util.UUID
@@ -12,7 +12,7 @@ actual fun platformModule(): Module {
     return module {
         single<SettingsStore> { InMemorySettingsStore() }
         single<DeviceIdentifierProvider> { JvmDeviceIdentifierProvider(settingsStore = get()) }
-        single<LocationProvider> { JvmLocationProvider() }
+        single<LocationProvider> { JvmLocationProvider(client = get()) }
     }
 }
 
@@ -42,10 +42,6 @@ private class JvmDeviceIdentifierProvider(
     private companion object {
         private const val DEVICE_ID_KEY: String = "device_identifier"
     }
-}
-
-private class JvmLocationProvider : LocationProvider {
-    override suspend fun getCurrentLocation(): GeoLocation? = null
 }
 
 

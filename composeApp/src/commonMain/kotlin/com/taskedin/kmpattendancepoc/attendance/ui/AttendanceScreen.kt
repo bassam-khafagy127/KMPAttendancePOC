@@ -38,6 +38,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.taskedin.kmpattendancepoc.attendance.model.CheckState
@@ -92,7 +93,11 @@ fun AttendanceScreen(
                         Column(
                             modifier = Modifier.fillMaxWidth().padding(16.dp)
                         ) {
-                            Row {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
                                 Text(
                                     text = "Current Location",
                                     style = MaterialTheme.typography.titleMedium,
