@@ -71,7 +71,10 @@ fun AttendanceScreen(
                         onClick = { isSettingsDialogVisible = true },
 //                        modifier = Modifier.padding(16.dp)
                     ) {
-                        Text("Settings")
+                        Text(
+                            text = "Settings",
+                            modifier = Modifier.padding(16.dp)
+                        )
                     }
                 }
             ) { paddingValues ->
