@@ -1,7 +1,7 @@
 package com.taskedin.kmpattendancepoc.data
 
 import arrow.core.Either
-import com.taskedin.kmpattendancepoc.data.models.Error
+import com.taskedin.kmpattendancepoc.data.models.Failure
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -10,7 +10,7 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 
-class HttpClientFunctions(
+class AttendanceRepositoryImpl(
     val client: HttpClient,
     val safeApiCall: SafeApiCall
 ) {
@@ -18,7 +18,7 @@ class HttpClientFunctions(
         route: String,
         parameters: Map<String, Any> = emptyMap(),
         headers: Map<String, Any> = emptyMap()
-    ): Either<Error, R> {
+    ): Either<Failure, R> {
         return safeApiCall.execute {
             client.get {
                 url("$baseUrl/$route")
@@ -36,7 +36,7 @@ class HttpClientFunctions(
         parameters: Map<String, Any> = emptyMap(),
         headers: Map<String, Any> = emptyMap(),
         body: Map<String, Any> = emptyMap(),
-    ): Either<Error, R> {
+    ): Either<Failure, R> {
         return safeApiCall.execute {
             client.post {
                 url("$baseUrl/$route")

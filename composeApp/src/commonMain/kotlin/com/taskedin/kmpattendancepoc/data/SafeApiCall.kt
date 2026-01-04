@@ -3,7 +3,7 @@ package com.taskedin.kmpattendancepoc.data
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.taskedin.kmpattendancepoc.data.models.Error
+import com.taskedin.kmpattendancepoc.data.models.Failure
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
@@ -17,7 +17,7 @@ object SafeApiCall {
 
     suspend inline fun <reified R> execute(
         crossinline apiCall: suspend () -> HttpResponse
-    ): Either<Error, R> {
+    ): Either<Failure, R> {
         return try {
             val response = apiCall()
             val status = response.status.value
@@ -32,28 +32,28 @@ object SafeApiCall {
             }
         } catch (e: SerializationException) {
             e.printStackTrace()
-            Error.LocalError.Serialization.left()
+            Failure.LocalFailure.Serialization.left()
         } catch (e: UnresolvedAddressException) {
             e.printStackTrace()
-            Error.RemoteError.UnresolvedAddressException.left()
+            Failure.RemoteFailure.UnresolvedAddressException.left()
         } catch (e: IOException) {
             e.printStackTrace()
-            Error.RemoteError.NoInternetError.left()
+            Failure.RemoteFailure.NoInternetError.left()
         } catch (e: ClientRequestException) {
             e.printStackTrace()
-            Error.RemoteErrorWithCode(
+            Failure.RemoteFailureWithCode(
                 error = e.message,
                 code = e.response.status.value
             ).left()
         } catch (e: ServerResponseException) {
             e.printStackTrace()
-            Error.RemoteError.ServerError.left()
+            Failure.RemoteFailure.ServerError.left()
         } catch (e: IllegalArgumentException) {
             e.printStackTrace()
-            Error.LocalError.InvalidRequest.left()
+            Failure.LocalFailure.InvalidRequest.left()
         } catch (e: Exception) {
             e.printStackTrace()
-            Error.RemoteError.UnexpectedError.left()
+            Failure.RemoteFailure.UnexpectedError.left()
         }
     }
 }
@@ -61,17 +61,17 @@ object SafeApiCall {
 fun mapHttpError(
     statusCode: Int,
     body: String?
-): Error {
-    val httpError = when (statusCode) {
-        400 -> Error.HttpError.BadRequest(body)
-        401 -> Error.HttpError.Unauthorized(body)
-        403 -> Error.HttpError.Forbidden(body)
-        404 -> Error.HttpError.NotFound(body)
-        409 -> Error.HttpError.Conflict(body)
-        429 -> Error.HttpError.TooManyRequests(body)
-        in 500..599 -> Error.HttpError.ServerError(statusCode, body)
-        else -> Error.HttpError.Unknown(statusCode, body)
+): Failure {
+    val httpFailure = when (statusCode) {
+        400 -> Failure.HttpFailure.BadRequest(body)
+        401 -> Failure.HttpFailure.Unauthorized(body)
+        403 -> Failure.HttpFailure.Forbidden(body)
+        404 -> Failure.HttpFailure.NotFound(body)
+        409 -> Failure.HttpFailure.Conflict(body)
+        429 -> Failure.HttpFailure.TooManyRequests(body)
+        in 500..599 -> Failure.HttpFailure.ServerFailure(statusCode, body)
+        else -> Failure.HttpFailure.Unknown(statusCode, body)
     }
-    return httpError
+    return httpFailure
 }
 

@@ -1,6 +1,6 @@
 package com.taskedin.kmpattendancepoc.di
 
-import com.taskedin.kmpattendancepoc.data.HttpClientFunctions
+import com.taskedin.kmpattendancepoc.data.AttendanceRepositoryImpl
 import com.taskedin.kmpattendancepoc.data.SafeApiCall
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -26,7 +26,7 @@ val networkModule = module {
     single { SafeApiCall }
     
     single {
-        HttpClientFunctions(
+        AttendanceRepositoryImpl(
             client = get(),
             safeApiCall = get()
         )
